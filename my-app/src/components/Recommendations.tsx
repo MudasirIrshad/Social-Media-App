@@ -10,13 +10,16 @@ async function Recommendations() {
     <div>
       <h2 className="text-lg font-semibold">Recommendations</h2>
       <div className="flex box-border rounded-lg w-full p-2 border-2 ">
-        <div className="space-y-4 ">
+        <div className="space-y-4 w-full">
           {users.map((user) => (
             <div
               key={user.id}
-              className="flex gap-2 items-center justify-between"
+              className="flex justify-between items-center gap-4 w-full"
             >
-              <div className="flex items-center gap-1">
+              {/* Follow Button on Left */}
+
+              {/* User Info on Right */}
+              <div className="flex items-center gap-2 w-full">
                 <Link href={`/profile/${user.username}`}>
                   <Avatar>
                     <AvatarImage
@@ -34,7 +37,7 @@ async function Recommendations() {
                   </Link>
                   <p className="text-muted-foreground">@{user.username}</p>
                   <p className="text-muted-foreground">
-                    @{user._count.followers} followers
+                    {user._count.followers} followers
                   </p>
                 </div>
               </div>
