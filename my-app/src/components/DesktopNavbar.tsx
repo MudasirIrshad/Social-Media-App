@@ -8,7 +8,6 @@ import { BellIcon, HomeIcon, User, UserIcon } from "lucide-react";
 
 async function DesktopNavbar() {
   const user = await currentUser();
-  console.log("user here is ", user);
 
   return (
     <div className="hidden md:flex items-center space-x-5">
