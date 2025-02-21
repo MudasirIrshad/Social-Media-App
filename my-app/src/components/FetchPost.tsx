@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
 import DeleteAlertDialg from "./DeleteAlertDialog";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import { HeartIcon } from "lucide-react";
+import { HeartIcon, MessageCircleIcon, SendIcon } from "lucide-react";
 import { Button } from "./ui/button";
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
@@ -123,10 +123,10 @@ function FetchPost({
                 />
               )}
             </div>
-            {post.author.image && (
+            {post.image && (
               <div className="rounded-lg overflow-hidden ">
                 <img
-                  src={`${post.author.image}`}
+                  src={`${post.image}`}
                   alt="Post Image"
                   className="w-full h-auto object-cover"
                 />
@@ -163,7 +163,82 @@ function FetchPost({
                   </Button>
                 </SignInButton>
               )}
+              <Button
+                variant={"ghost"}
+                size={"sm"}
+                className="text-muted-foreground gap-2 hover:text-blue-500"
+                onClick={() => setShowComments(!showComments)}
+              >
+                <MessageCircleIcon
+                  className={`size-5 ${
+                    showComments ? "fill-blue-500 text-blue-500" : ""
+                  }`}
+                />
+                <span>{post.comment.length}</span>
+              </Button>
             </div>
+            <div>
+              {showComments && (
+                <>
+                  <div className="space-y-4">
+                    {post.comment.map((comment) => (
+                      <div
+                        key={comment.id}
+                        className="flex items-start space-x-3 p-3 rounded-lg shadow-sm 
+                 bg-gray-100 dark:bg-gray-800 dark:text-gray-300"
+                      >
+                        {/* Avatar */}
+                        <Avatar>
+                          <AvatarImage
+                            src={comment.author.image ?? "/avatar.png"}
+                            className="rounded-full w-10 h-10"
+                          />
+                        </Avatar>
+
+                        {/* Comment Content */}
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <Link
+                              href={`/profile/${comment.author.username}`}
+                              className="font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                              {comment.author.name}
+                            </Link>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                              {formatDistanceToNow(new Date(comment.createdAt))}{" "}
+                              ago
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">
+                            {comment.content}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            {user && (
+              <>
+                <div className="relative border-2 border-gray-300 rounded-lg p-2 bg-transparent shadow-sm">
+                  <textarea
+                    placeholder="Write a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    disabled={isCommenting}
+                    className="w-full h-14 border-none bg-transparent rounded-md p-4 text-sm focus:outline-none resize-none"
+                  />
+                  <button
+                    onClick={handleComment}
+                    disabled={isCommenting}
+                    className="absolute bottom-3 right-3 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition disabled:bg-gray-400"
+                  >
+                    <SendIcon className="w-4 h-4" />
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
