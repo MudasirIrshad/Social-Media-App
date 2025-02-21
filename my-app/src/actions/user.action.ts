@@ -49,7 +49,7 @@ export async function getUserByClerkId(clerkId: string) {
 
 export async function getDbUserId() {
   const { userId: clerkId } = await auth();
-  if (!clerkId) throw new Error("UnAuthenticated");
+  if (!clerkId) return null;
   const user = await getUserByClerkId(clerkId);
   if (!user) throw new Error("User not found in database");
   return user.id;
@@ -58,6 +58,7 @@ export async function getDbUserId() {
 export async function getRandomUsers() {
   try {
     const myId = await getDbUserId();
+    if (!myId) return [];
     // get random users exluding ourselves and user that we already follow
     const randomUsers = await prisma.user.findMany({
       where: {
@@ -90,6 +91,7 @@ export async function getRandomUsers() {
 export async function toggleFollow(targetuserId: string) {
   try {
     const myId = await getDbUserId();
+    if (!myId) return;
     if (myId == targetuserId) throw new Error("you can't follow yourself");
     // if already followed than unfollow
     const existingFollow = await prisma.follows.findUnique({
@@ -128,7 +130,7 @@ export async function toggleFollow(targetuserId: string) {
         }),
       ]);
     }
-    revalidatePath("/")
+    revalidatePath("/");
     return { success: true };
   } catch (error) {
     console.error("Error toggling follow:", error);
