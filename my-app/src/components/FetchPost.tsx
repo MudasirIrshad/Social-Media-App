@@ -11,6 +11,9 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
 import DeleteAlertDialg from "./DeleteAlertDialog";
+import { SignInButton, useUser } from "@clerk/nextjs";
+import { HeartIcon } from "lucide-react";
+import { Button } from "./ui/button";
 type Posts = Awaited<ReturnType<typeof getPosts>>;
 type Post = Posts[number];
 function FetchPost({
@@ -20,6 +23,7 @@ function FetchPost({
   post: Post;
   dbUserId: string | null;
 }) {
+  const { user } = useUser();
   const [newComment, setNewComment] = useState("");
   const [isCommenting, setIsCommenting] = useState(false);
   const [isLiking, setIsLiking] = useState(false);
@@ -28,7 +32,7 @@ function FetchPost({
     post.like.some((like) => like.userId === dbUserId)
   );
   const [optimisticLikes, setOptimisticLikes] = useState(post._count.like);
-
+  const [showComments, setShowComments] = useState(false);
   const handleLike = async () => {
     if (isLiking) return;
     try {
@@ -117,6 +121,47 @@ function FetchPost({
                   onDelete={handleDeletePost}
                   isDeleting={isDeleting}
                 />
+              )}
+            </div>
+            {post.author.image && (
+              <div className="rounded-lg overflow-hidden ">
+                <img
+                  src={`${post.author.image}`}
+                  alt="Post Image"
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+            )}
+            <div>
+              {user ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={`text-muted-foreground gap-2 ${
+                    hasLiked
+                      ? "text-red-500 hover:text-red-600"
+                      : "hover:text-red-500"
+                  }`}
+                  onClick={handleLike}
+                >
+                  {hasLiked ? (
+                    <HeartIcon className="size-5 fill-current" />
+                  ) : (
+                    <HeartIcon className="size-5" />
+                  )}
+                  <span>{optimisticLikes}</span>
+                </Button>
+              ) : (
+                <SignInButton mode="modal">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-muted-foreground gap-2"
+                  >
+                    <HeartIcon className="size-5" />
+                    <span>{optimisticLikes}</span>
+                  </Button>
+                </SignInButton>
               )}
             </div>
           </div>

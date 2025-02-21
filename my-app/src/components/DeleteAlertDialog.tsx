@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, Trash2Icon } from "lucide-react";
 
 export default function DeleteAlertDialg({
   des,
@@ -25,13 +25,19 @@ export default function DeleteAlertDialg({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">
+        <Button
+          variant="ghost"
+          size={"sm"}
+          className="text-muted-foreground hover:text-red-500 -mr-2"
+        >
           {isDeleting ? (
             <>
               <Loader2Icon className="size-4 mr-2 animate-spin" />
             </>
           ) : (
-            <>Delete</>
+            <>
+              <Trash2Icon className="size-4" />
+            </>
           )}
         </Button>
       </AlertDialogTrigger>
