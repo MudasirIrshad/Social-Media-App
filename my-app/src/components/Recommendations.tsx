@@ -14,34 +14,39 @@ async function Recommendations() {
           {users.map((user) => (
             <div
               key={user.id}
-              className="flex justify-between items-center gap-4 w-full"
+              className="flex flex-col items-center gap-4 w-full p-4 border rounded-lg bg-white dark:bg-zinc-900 shadow-md"
             >
-              {/* Follow Button on Left */}
-
-              {/* User Info on Right */}
-              <div className="flex items-center gap-2 w-full">
-                <Link href={`/profile/${user.username}`}>
+              {/* Profile Info */}
+              <div className="flex items-center gap-4 w-full">
+                {/* Avatar */}
+                <Link href={`/profile/${user.username}`} className="shrink-0">
                   <Avatar>
                     <AvatarImage
                       src={user.image ?? "/avatar.png"}
-                      className="rounded-full w-12 h-12 mr-2"
+                      className="rounded-full w-10 h-10"
                     />
                   </Avatar>
                 </Link>
-                <div>
+
+                {/* User Details */}
+                <div className="flex flex-col w-full">
                   <Link
                     href={`/profile/${user.username}`}
-                    className="font-medium cursor-pointer"
+                    className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 hover:underline"
                   >
                     {user.username}
                   </Link>
-                  <p className="text-muted-foreground">@{user.username}</p>
-                  <p className="text-muted-foreground">
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    @{user.username}
+                  </p>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
                     {user._count.followers} followers
                   </p>
                 </div>
               </div>
-              <FollowButton userId={user.id} />
+
+              {/* Follow Button (Full Width) */}
+              <FollowButton userId={user.id} className="w-full" />
             </div>
           ))}
         </div>

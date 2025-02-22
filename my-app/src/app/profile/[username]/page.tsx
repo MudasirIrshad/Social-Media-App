@@ -1,8 +1,13 @@
-import { getProfileByUsername, getUserPosts } from "@/actions/profile.action";
+import {
+  getProfileByUsername,
+  getUserPosts,
+  isFollowing,
+} from "@/actions/profile.action";
 import { getDbUserId } from "@/actions/user.action";
+import FollowButton from "@/components/FollowButton";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { LinkIcon, LocateIcon, MapPinIcon } from "lucide-react";
+import { LinkIcon, MapPinIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -25,7 +30,7 @@ async function ProfilePage({ params }: { params: { username: string } }) {
   // console.log(posts);
   const dbUserId = await getDbUserId();
   // console.log(dbUserId);
-
+  const isCurrentUserFollowing = await isFollowing(`${user?.id}`);
   return (
     <div>
       <div className="box-border border border-zinc-300 dark:border-zinc-700 p-6 rounded-xl bg-white dark:bg-zinc-900 shadow-md max-w-lg mx-auto">
@@ -71,11 +76,22 @@ async function ProfilePage({ params }: { params: { username: string } }) {
         {/* Follow Button */}
         {user?.id !== dbUserId ? (
           <>
-            <div className="mt-4 flex justify-center">
-              <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full">
-                Follow
-              </Button>
-            </div>
+            {isCurrentUserFollowing ? (
+              <>
+                <div className="mt-4 flex justify-center">
+                  <FollowButton
+                    userId={`${user?.id}`}
+                    alreadyFollowing={isCurrentUserFollowing}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="mt-4 flex justify-center">
+                  <FollowButton userId={`${user?.id}`} />
+                </div>
+              </>
+            )}
           </>
         ) : (
           <></>
