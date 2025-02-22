@@ -9,7 +9,7 @@ import { LinkIcon, MapPinIcon } from "lucide-react";
 async function Sidebar() {
   const authUser = await currentUser();
   const user = await getUserByClerkId(`${authUser?.id}`);
-  if (!user) return <UnAuthenticatedSidebar/>;
+  if (!user) return <UnAuthenticatedSidebar />;
 
   if (!authUser) return <UnAuthenticatedSidebar />;
   return (
@@ -48,15 +48,37 @@ async function Sidebar() {
             </div>
             {user.website ? (
               <>
-                <div className="text-sm text-zinc-500 mt-4">
-                  <div>
-                    <MapPinIcon />
-                    {user.bio}
+                <div className="text-sm text-zinc-500 dark:text-zinc-400 mt-4 space-y-2">
+                  {/* Location */}
+                  <div className="flex items-center gap-2">
+                    <MapPinIcon
+                      size={16}
+                      className="text-zinc-600 dark:text-zinc-300"
+                    />
+                    <span>{user?.location ?? "Location not provided"}</span>
                   </div>
-                  <div>
-                    <LinkIcon />
-                    <link rel="stylesheet" href={user.website} />
-                  </div>
+
+                  {/* Website */}
+                  {user?.website && (
+                    <div className="flex items-center gap-2">
+                      <LinkIcon
+                        size={16}
+                        className="text-blue-600 dark:text-blue-400"
+                      />
+                      <a
+                        href={
+                          user.website.startsWith("http")
+                            ? user.website
+                            : `https://${user.website}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 dark:text-blue-400 hover:underline truncate max-w-xs"
+                      >
+                        {user.website}
+                      </a>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (

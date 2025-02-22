@@ -87,7 +87,7 @@ export async function getUserPosts(userId: string) {
   }
 }
 
-export async function updageProfile(formData: FormData) {
+export async function updateProfile(formData: FormData) {
   try {
     const { userId: clerkId } = await auth();
     if (!clerkId) throw new Error("Unauthorized");
