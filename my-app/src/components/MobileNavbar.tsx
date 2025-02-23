@@ -83,7 +83,7 @@ function MobileNavbar() {
                   <Link
                     href={`/profile/${
                       user.user?.username ??
-                      user.user.emailAddresses[0].emailAddress.split("@")[0]
+                      user.user?.emailAddresses[0].emailAddress.split("@")[0]
                     }`}
                   >
                     <UserIcon className="w-4 h-4" />

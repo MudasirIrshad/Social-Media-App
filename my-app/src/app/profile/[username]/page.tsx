@@ -36,7 +36,7 @@ async function ProfilePageServer({ params }: { params: { username: string } }) {
       user={user}
       posts={posts}
       likedPosts={likedPosts}
-      initialIsFollowing={isCurrentUserFollowing}
+      isFollowing={isCurrentUserFollowing}
     />
   );
 }
