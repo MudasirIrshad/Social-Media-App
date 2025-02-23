@@ -131,3 +131,61 @@ export async function isFollowing(targetedUserId: string) {
     throw new Error("Error checking if user is following");
   }
 }
+
+export async function getUserLikedPosts(userId: string) {
+  try {
+    const likedPosts = await prisma.post.findMany({
+      where: {
+        like: {
+          some: {
+            userId,
+          },
+        },
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            image: true,
+          },
+        },
+        comment: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                name: true,
+                username: true,
+                image: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+        like: {
+          select: {
+            userId: true,
+          },
+        },
+        _count: {
+          select: {
+            like: true,
+            comment: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return likedPosts;
+  } catch (error) {
+    console.error("Error fetching liked posts:", error);
+    throw new Error("Failed to fetch liked posts");
+  }
+}
