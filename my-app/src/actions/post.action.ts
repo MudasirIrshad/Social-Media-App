@@ -25,7 +25,7 @@ export async function createPost(content: string, imageUrl: string) {
 }
 export async function getPosts() {
   try {
-    const posts = prisma.post.findMany({
+    const posts = await prisma.post.findMany({
       orderBy: {
         createdAt: "desc",
       },

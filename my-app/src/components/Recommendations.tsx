@@ -46,7 +46,7 @@ async function Recommendations() {
               </div>
 
               {/* Follow Button (Full Width) */}
-              <FollowButton userId={user.id} className="w-full" />
+              <FollowButton userId={user.id} />
             </div>
           ))}
         </div>

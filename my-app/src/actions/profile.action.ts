@@ -41,29 +41,18 @@ export async function getUserPosts(userId: string) {
       where: {
         authorId: userId,
       },
-      orderBy: {
-        createdAt: "desc",
-      },
-      select: {
-        id: true,
-        content: true,
-        image: true,
-        createdAt: true,
+      include: {
         author: {
           select: {
             id: true,
-            username: true,
             name: true,
+            username: true,
+            image: true,
           },
         },
         comment: {
-          // Now includes comments
-          select: {
-            id: true,
-            content: true, // Include comment content
-            createdAt: true,
+          include: {
             author: {
-              // Includes author details for each comment
               select: {
                 id: true,
                 name: true,
@@ -72,19 +61,31 @@ export async function getUserPosts(userId: string) {
               },
             },
           },
+          orderBy: {
+            createdAt: "asc",
+          },
+        },
+        like: {
+          select: {
+            userId: true,
+          },
         },
         _count: {
           select: {
-            comment: true,
             like: true,
+            comment: true,
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
+
     return posts;
   } catch (error) {
-    console.error("Error fetching user posts for profile:", error);
-    throw new Error("Error fetching user posts for profile: ");
+    console.error("Error fetching user posts:", error);
+    throw new Error("Failed to fetch user posts");
   }
 }
 

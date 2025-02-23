@@ -22,7 +22,9 @@ export async function generateMetadata({
 
 async function ProfilePageServer({ params }: { params: { username: string } }) {
   const user = await getProfileByUsername(params.username);
+
   if (!user) notFound();
+
   const [posts, likedPosts, isCurrentUserFollowing] = await Promise.all([
     getUserPosts(user.id),
     getUserLikedPosts(user.id),
@@ -34,7 +36,7 @@ async function ProfilePageServer({ params }: { params: { username: string } }) {
       user={user}
       posts={posts}
       likedPosts={likedPosts}
-      isFollowing={isFollowing}
+      initialIsFollowing={isCurrentUserFollowing}
     />
   );
 }
