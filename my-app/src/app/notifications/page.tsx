@@ -1,16 +1,15 @@
-"use client";
-
+"use client"
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { HeartIcon, MessageCircleIcon, UserPlusIcon } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import toast from "react-hot-toast";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
+import { NotificationSkeleton } from "@/components/NotificationSkeleton";
 import {
   getNotifications,
   markNotificationsAsRead,
 } from "@/actions/notification.action";
-import { NotificationSkeleton } from "@/components/NotificationSkeleton";
-import { useUser } from "@clerk/nextjs";
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { formatDistanceToNow } from "date-fns";
-import { HeartIcon, MessageCircleIcon, UserPlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 type Notifications = Awaited<ReturnType<typeof getNotifications>>;
 type Notification = Notifications[number];
@@ -54,7 +53,7 @@ function Page() {
   };
 
   return (
-    <div className="border-b p-4 max-w-2xl mx-auto bg-white dark:bg-gray-900 rounded-lg shadow-md">
+    <div className="border-b p-4 mx-auto bg-white dark:bg-transparent rounded-lg shadow-md">
       {isLoading ? (
         <NotificationSkeleton />
       ) : (
@@ -79,7 +78,7 @@ function Page() {
               {notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm"
+                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 bg-white dark:bg-transparent hover:bg-gray-50 dark:hover:bg-gray-700 transition-all shadow-sm"
                 >
                   <div className="flex items-start gap-3">
                     {/* Avatar */}
@@ -114,7 +113,7 @@ function Page() {
 
                       {/* Post Preview */}
                       {notification.post && (
-                        <div className="mt-3 border border-gray-300 dark:border-gray-700 p-3 rounded-md bg-gray-100 dark:bg-gray-800 shadow-sm">
+                        <div className="mt-3 border border-gray-300 dark:border-gray-700 p-3 rounded-md bg-gray-100 dark:bg-transparent shadow-sm">
                           {notification.post.image && (
                             <img
                               src={notification.post.image}
@@ -130,7 +129,7 @@ function Page() {
 
                       {/* Comment Section */}
                       {notification.comment?.content && (
-                        <div className="flex items-start gap-2 border border-gray-200 dark:border-gray-700 mt-2 p-2 rounded-md text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-900">
+                        <div className="flex items-start gap-2 border border-gray-200 dark:border-gray-700 mt-2 p-2 rounded-md text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-transparent">
                           <Avatar className="w-6 h-6">
                             <AvatarImage
                               className="w-full h-full rounded-full object-cover"
