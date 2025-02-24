@@ -160,12 +160,11 @@ function ProfilePageClient({
                     className="w-full mt-4"
                     onClick={handleFollow}
                     disabled={isUpdatingFollow}
-                    variant={isFollowing ? "default" : "outline"}
+                    variant={isFollowing ? "outline" : "default"}
                   >
-                    {isFollowing ? "Follow" : "Unfollow"}
+                    {isFollowing ? "UnFollow" : "Follow"}
                   </Button>
                 )}
-
                 {/* LOCATION & WEBSITE */}
                 <div className="w-full mt-6 space-y-2 text-sm">
                   {user.location && (
