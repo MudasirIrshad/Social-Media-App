@@ -56,6 +56,7 @@ function MobileNavbar() {
               variant="ghost"
               className="flex items-center gap-3 justify-start"
               asChild
+              onClick={() => setShowMobileMenu(false)}
             >
               <Link href="/">
                 <HomeIcon className="w-4 h-4" />
@@ -69,6 +70,7 @@ function MobileNavbar() {
                   variant="ghost"
                   className="flex items-center gap-3 justify-start"
                   asChild
+                  onClick={() => setShowMobileMenu(false)}
                 >
                   <Link href="/notifications">
                     <BellIcon className="w-4 h-4" />
@@ -79,6 +81,7 @@ function MobileNavbar() {
                   variant="ghost"
                   className="flex items-center gap-3 justify-start"
                   asChild
+                  onClick={() => setShowMobileMenu(false)}
                 >
                   <Link
                     href={`/profile/${
@@ -94,6 +97,7 @@ function MobileNavbar() {
                   <Button
                     variant="ghost"
                     className="flex items-center gap-3 justify-start w-full"
+                    onClick={() => setShowMobileMenu(false)}
                   >
                     <LogOutIcon className="w-4 h-4" />
                     Logout
@@ -102,7 +106,11 @@ function MobileNavbar() {
               </>
             ) : (
               <SignInButton mode="modal">
-                <Button variant="default" className="w-full">
+                <Button
+                  variant="default"
+                  className="w-full"
+                  onClick={() => setShowMobileMenu(false)}
+                >
                   Sign In
                 </Button>
               </SignInButton>
