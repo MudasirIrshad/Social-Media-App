@@ -23,7 +23,7 @@ function FollowButton({
     }
   };
   return (
-    <>
+    <div>
       {alreadyFollowing ? (
         <Button
           onClick={handleFollow}
@@ -49,7 +49,7 @@ function FollowButton({
           )}
         </Button>
       )}
-    </>
+    </div>
   );
 }
 
